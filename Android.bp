@@ -35,6 +35,7 @@ android_library {
         "androidx.legacy_legacy-preference-v14",
         "SettingsLibActivityEmbedding",
         "dynamiccolors",
+        "tallytokens",
     ],
     proto: {
         type: "nano",
