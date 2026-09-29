@@ -53,6 +53,16 @@
     <dimen name="tally_search_list_padding_horizontal">@dimen/tally_space_l</dimen>
     <dimen name="tally_search_list_padding_vertical">4dp</dimen>
 
+    <!-- A result or recent search as a key (the prototype's .srow): 6 dp apart, at least 56 dp
+         tall, 12 dp inside, the icon 14 dp before the words. -->
+    <dimen name="tally_search_row_gap">6dp</dimen>
+    <dimen name="tally_search_row_padding_horizontal">@dimen/tally_space_m</dimen>
+    <dimen name="tally_search_row_padding_vertical">@dimen/tally_space_s</dimen>
+    <dimen name="tally_search_row_icon_gap">14dp</dimen>
+    <!-- A key's keyboard focus ring: 2 dp in the accent, 2 dp clear of the key. -->
+    <dimen name="tally_search_row_focus_inset">-4dp</dimen>
+    <dimen name="tally_search_row_focus_radius">11dp</dimen>
+
     <!-- "No results" (the prototype's .aa-empty): muted words 24 dp from the sides, just above
          the search slot, where the first result would be. -->
     <dimen name="tally_search_empty_padding_horizontal">@dimen/tally_space_xxl</dimen>

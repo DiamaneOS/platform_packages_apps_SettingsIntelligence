@@ -14,21 +14,28 @@
      limitations under the License.
 -->
 
+<!-- Tally: a result as a key (the prototype's .srow): the surface in a hairline edge with 8 dp
+     corners, 6 dp above the next key, at least 56 dp tall; the result's own icon, then its title
+     in the ink and its place in Settings in the muted colour, both wrapping at large text. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:background="?android:attr/selectableItemBackground"
+    android:layout_marginTop="@dimen/tally_search_row_gap"
+    android:minHeight="@dimen/tally_row_min_height"
+    android:paddingStart="@dimen/tally_search_row_padding_horizontal"
+    android:paddingEnd="@dimen/tally_search_row_padding_horizontal"
+    android:paddingTop="@dimen/tally_search_row_padding_vertical"
+    android:paddingBottom="@dimen/tally_search_row_padding_vertical"
+    android:gravity="center_vertical"
+    android:background="@drawable/tally_search_row"
+    android:foreground="@drawable/tally_search_row_focus"
     android:clipToPadding="false">
 
     <include layout="@layout/search_icon_view"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -37,17 +44,19 @@
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:ellipsize="marquee"/>
+            android:textAppearance="@style/TextAppearance.Tally.Item"
+            android:lineHeight="@dimen/tally_type_item_line_height"
+            android:textColor="@color/tally_ink"
+            android:textAlignment="viewStart"/>
 
         <TextView
             android:id="@android:id/summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItemSecondary"
-            android:ellipsize="marquee"/>
+            android:textAppearance="@style/TextAppearance.Tally.Body"
+            android:lineHeight="@dimen/tally_type_body_line_height"
+            android:textColor="@color/tally_ink_muted"
+            android:textAlignment="viewStart"/>
 
         <include layout="@layout/search_breadcrumb_view"/>
     </LinearLayout>
