@@ -15,12 +15,13 @@
   limitations under the License.
   -->
 
+<!-- Tally: where the result lives in Settings, in the muted body type. -->
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/breadcrumb"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingTop="5dp"
-    android:textAppearance="?android:attr/textAppearanceListItemSecondary"
-    android:textColor="@color/materialColorOnSurfaceVariant"
-    android:ellipsize="marquee"/>
+    android:textAppearance="@style/TextAppearance.Tally.Body"
+    android:lineHeight="@dimen/tally_type_body_line_height"
+    android:textColor="@color/tally_ink_muted"
+    android:textAlignment="viewStart"/>
