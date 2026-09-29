@@ -15,11 +15,11 @@
   limitations under the License.
   -->
 
+<!-- Tally: the result's icon, 24 dp, 14 dp before its words (the prototype's .srow). -->
 <ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/icon"
-    android:layout_width="@dimen/dashboard_tile_image_size"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/tally_icon_size"
+    android:layout_height="@dimen/tally_icon_size"
     android:scaleType="centerInside"
-    android:layout_marginStart="@dimen/dashboard_tile_image_margin"
-    android:layout_marginEnd="@dimen/dashboard_tile_image_margin" />
+    android:layout_marginEnd="@dimen/tally_search_row_icon_gap" />
