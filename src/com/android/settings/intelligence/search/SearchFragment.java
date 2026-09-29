@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.VisibleForTesting;
-import androidx.cardview.widget.CardView;
 import androidx.loader.content.Loader;
 import androidx.loader.app.LoaderManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -86,7 +85,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @VisibleForTesting
     RecyclerView mResultsRecyclerView;
     @VisibleForTesting
-    SearchView mSearchView;
+    TallySearchField mSearchView;
     @VisibleForTesting
     LinearLayout mNoResultsView;
 
@@ -145,19 +144,21 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         final View view = inflater.inflate(R.layout.search_panel, container, false);
         mResultsRecyclerView = view.findViewById(R.id.list_results);
         mResultsRecyclerView.setAdapter(mSearchAdapter);
-        mResultsRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        // Tally: the results stack up from the search slot at the bottom, the first right above it.
+        mResultsRecyclerView.setLayoutManager(new LinearLayoutManager(activity,
+                RecyclerView.VERTICAL, true /* reverseLayout */));
         mResultsRecyclerView.addOnScrollListener(mScrollListener);
 
         mNoResultsView = view.findViewById(R.id.no_results_layout);
 
-        final CardView cardView = view.findViewById(R.id.search_bar);
-        cardView.setBackgroundResource(R.drawable.search_bar_selected_background);
-
         final Toolbar toolbar = view.findViewById(R.id.search_toolbar);
         activity.setActionBar(toolbar);
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+        // Tally: no title in the bar, as before, when the search field filled it.
+        activity.getActionBar().setDisplayShowTitleEnabled(false);
+        TallySearchPanel.attach(activity, view, mResultsRecyclerView);
 
-        mSearchView = toolbar.findViewById(R.id.search_view);
+        mSearchView = view.findViewById(R.id.search_view);
         mSearchView.setQuery(mQuery, false /* submitQuery */);
         mSearchView.setOnQueryTextListener(this);
         mSearchView.requestFocus();

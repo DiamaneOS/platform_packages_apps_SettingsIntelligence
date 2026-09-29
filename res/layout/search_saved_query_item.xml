@@ -15,30 +15,40 @@
   limitations under the License.
   -->
 
+<!-- Tally: a recent search as a key, as a result (search_intent_item.xml): the history icon in the
+     muted colour and the words in the ink. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:background="?android:attr/selectableItemBackground"
-    android:minHeight="?android:attr/listPreferredItemHeight"
-    android:gravity="center_vertical">
+    android:layout_marginTop="@dimen/tally_search_row_gap"
+    android:minHeight="@dimen/tally_row_min_height"
+    android:paddingStart="@dimen/tally_search_row_padding_horizontal"
+    android:paddingEnd="@dimen/tally_search_row_padding_horizontal"
+    android:paddingTop="@dimen/tally_search_row_padding_vertical"
+    android:paddingBottom="@dimen/tally_search_row_padding_vertical"
+    android:gravity="center_vertical"
+    android:background="@drawable/tally_search_row"
+    android:foreground="@drawable/tally_search_row_focus">
 
     <ImageView
         android:id="@android:id/icon"
-        android:layout_width="@dimen/dashboard_tile_image_size"
-        android:layout_height="@dimen/dashboard_tile_image_size"
+        android:layout_width="@dimen/tally_icon_size"
+        android:layout_height="@dimen/tally_icon_size"
+        android:layout_marginEnd="@dimen/tally_search_row_icon_gap"
         android:scaleType="centerInside"
-        android:layout_marginStart="@dimen/dashboard_tile_image_margin"
-        android:layout_marginEnd="@dimen/dashboard_tile_image_margin"
-        android:src="@drawable/ic_restore" />
+        android:src="@drawable/ic_restore"
+        android:tint="@color/tally_ink_muted"/>
 
     <TextView
         android:id="@android:id/title"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:textAppearance="?android:attr/textAppearanceListItem" />
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textAppearance="@style/TextAppearance.Tally.Item"
+        android:lineHeight="@dimen/tally_type_item_line_height"
+        android:textColor="@color/tally_ink"
+        android:textAlignment="viewStart"/>
 
 </LinearLayout>
