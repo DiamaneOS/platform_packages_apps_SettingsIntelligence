@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2026 The DiamaneOS Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!-- The Tally search slot, drawn 2 dp inside its view (tally_search_dimens.xml): the surface in a
+     1 dp outline with 12 dp corners, as the homepage's slot. While the field (or its clear key)
+     has focus, the edge takes the accent with a 2 dp accent ring around it, as the prototype's
+     focused search field (.aa-search:focus-within): one 3 dp stroke from the view's edge, so the
+     ring and the edge meet with no seam. The slot's view adds its children's states, so it is
+     focused while the field is. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tally_surface"/>
+            <stroke
+                android:width="@dimen/tally_search_slot_focus_stroke"
+                android:color="@color/tally_accent"/>
+            <corners android:radius="@dimen/tally_search_slot_focus_radius"/>
+        </shape>
+    </item>
+    <item>
+        <layer-list>
+            <item
+                android:left="@dimen/tally_search_slot_ring"
+                android:top="@dimen/tally_search_slot_ring"
+                android:right="@dimen/tally_search_slot_ring"
+                android:bottom="@dimen/tally_search_slot_ring">
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/tally_surface"/>
+                    <stroke
+                        android:width="@dimen/tally_stroke_hairline"
+                        android:color="@color/tally_outline"/>
+                    <corners android:radius="@dimen/tally_radius_m"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>
