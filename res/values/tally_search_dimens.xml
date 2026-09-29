@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2026 The DiamaneOS Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<!-- The Tally search panel. Values that are Tally tokens point at the tallytokens library. -->
+<resources>
+    <!-- The bar at the top, under the status bar: Navigate up and More options. -->
+    <dimen name="tally_search_bar_height">48dp</dimen>
+    <dimen name="tally_search_bar_key_min_width">@dimen/tally_target_min</dimen>
+
+    <!-- The search slot sits where the homepage's does (Settings' search_bar.xml): 48 dp tall,
+         16 dp from the sides, 8 dp under the results and 4 dp above the navigation bar, or above
+         the keyboard while it shows; 12 dp corners, the icon 16 dp in and the words 12 dp after
+         it. Its view is 2 dp larger than the slot on every side, room for the 2 dp ring of a
+         focused field (the prototype's .aa-search:focus-within), so its margins are 2 dp smaller
+         and its padding 2 dp larger than the slot's. -->
+    <dimen name="tally_search_slot_ring">2dp</dimen>
+    <!-- Focused: the ring and the slot's 1 dp edge as one 3 dp stroke from the view's edge; the
+         stroke's middle runs 1.5 dp in, so 12.5 dp there gives the ring 14 dp outer corners. -->
+    <dimen name="tally_search_slot_focus_stroke">3dp</dimen>
+    <dimen name="tally_search_slot_focus_radius">12.5dp</dimen>
+    <dimen name="tally_search_slot_margin_side">14dp</dimen>
+    <dimen name="tally_search_slot_margin_top">2dp</dimen>
+    <dimen name="tally_search_slot_margin_bottom">2dp</dimen>
+    <dimen name="tally_search_slot_min_height">52dp</dimen>
+    <dimen name="tally_search_slot_padding_side">18dp</dimen>
+    <dimen name="tally_search_slot_padding_vertical">6dp</dimen>
+    <dimen name="tally_search_text_margin_start">@dimen/tally_space_m</dimen>
+    <dimen name="tally_search_text_padding_end">@dimen/tally_space_s</dimen>
+    <!-- The field and the clear key fill the slot's 48 dp height, so each is a 48 dp touch
+         target: they reach 4 dp into the slot's top and bottom padding, and the slot stays 48 dp
+         tall. The clear key's icon sits 16 dp from the slot's end, as the search icon does from
+         the start: the key reaches 12 dp into the slot's end padding. -->
+    <dimen name="tally_search_key_margin_vertical">-4dp</dimen>
+    <dimen name="tally_search_clear_margin_end">-12dp</dimen>
+
+    <!-- The results list: its keys stand 16 dp from the sides and stack up from the search slot,
+         8 dp above it. The list keeps 4 dp above and below them, room for a key's keyboard focus
+         ring, and lets them draw into it. -->
+    <dimen name="tally_search_list_padding_horizontal">@dimen/tally_space_l</dimen>
+    <dimen name="tally_search_list_padding_vertical">4dp</dimen>
+
+    <!-- "No results" (the prototype's .aa-empty): muted words 24 dp from the sides, just above
+         the search slot, where the first result would be. -->
+    <dimen name="tally_search_empty_padding_horizontal">@dimen/tally_space_xxl</dimen>
+    <dimen name="tally_search_empty_padding_bottom">@dimen/tally_space_l</dimen>
+</resources>

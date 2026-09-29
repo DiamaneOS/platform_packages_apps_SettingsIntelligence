@@ -22,5 +22,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowSoftInputMode">adjustPan</item>
+        <!-- Tally: the page colour of the Settings homepage the search opens from. -->
+        <item name="android:colorBackground">@color/tally_background</item>
     </style>
 </resources>

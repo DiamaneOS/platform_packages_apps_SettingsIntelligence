@@ -13,61 +13,55 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+<!-- Tally: the search field is the Tally search slot, at the bottom where the homepage's slot
+     sits, so opening search keeps the same field in the same place; the results stack up from
+     it, and the slot rides above the keyboard while it shows (TallySearchPanel). The bar at the
+     top keeps stock's Navigate up and its menu (Clear history). The ids the fragment looks up
+     are stock's. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_panel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/search_bar_container"
+    <Toolbar
+        android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp">
-        <androidx.cardview.widget.CardView
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/search_bar_margin"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="2dp">
-            <Toolbar
-                android:id="@+id/search_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/search_bar_height"
-                android:background="?android:attr/selectableItemBackground"
-                android:contentInsetStart="0dp"
-                android:contentInsetStartWithNavigation="0dp"
-                android:theme="?android:attr/actionBarTheme">
-                <SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:iconifiedByDefault="false"
-                    android:imeOptions="actionSearch|flagNoExtractUi"
-                    android:searchIcon="@null"/>
-            </Toolbar>
-        </androidx.cardview.widget.CardView>
-    </FrameLayout>
+        android:layout_height="@dimen/tally_search_bar_height"
+        android:minHeight="@dimen/tally_search_bar_height"
+        android:contentInsetStart="0dp"
+        android:contentInsetStartWithNavigation="0dp"
+        android:theme="@style/ThemeOverlay.Tally.SearchBar"
+        android:popupTheme="@style/ThemeOverlay.Tally.SearchMenu"/>
+
+    <!-- A hairline under the bar while results are hidden above the list's top. -->
+    <View
+        android:id="@+id/tally_search_bar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tally_stroke_hairline"
+        android:background="@color/tally_outline_variant"
+        android:visibility="invisible"/>
 
     <FrameLayout
         android:id="@+id/layout_results"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <!-- Padding is included in the background -->
+        <!-- Stacked from the bottom (SearchFragment): the first result sits right above the
+             search slot. The keys' focus rings may draw outside the keys. -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_results"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dashboard_padding_start"
-            android:paddingEnd="@dimen/dashboard_padding_end"
-            android:paddingTop="@dimen/dashboard_padding_top"
-            android:paddingBottom="@dimen/dashboard_padding_bottom"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/tally_search_list_padding_horizontal"
+            android:paddingEnd="@dimen/tally_search_list_padding_horizontal"
+            android:paddingTop="@dimen/tally_search_list_padding_vertical"
+            android:paddingBottom="@dimen/tally_search_list_padding_vertical"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"/>
 
@@ -75,31 +69,98 @@
             android:id="@+id/no_results_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="35dp"
+            android:gravity="bottom"
             android:orientation="vertical"
             android:visibility="gone">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"/>
-
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/empty_search_results"/>
-
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:paddingTop="24dp"
-                android:textSize="18sp"
-                android:text="@string/search_no_results"
-                android:gravity="center"/>
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/tally_search_empty_padding_horizontal"
+                android:paddingEnd="@dimen/tally_search_empty_padding_horizontal"
+                android:paddingBottom="@dimen/tally_search_empty_padding_bottom"
+                android:textAppearance="@style/TextAppearance.Tally.Body"
+                android:lineHeight="@dimen/tally_type_body_line_height"
+                android:textColor="@color/tally_ink_muted"
+                android:textAlignment="viewStart"
+                android:text="@string/search_no_results"/>
 
         </LinearLayout>
 
     </FrameLayout>
+
+    <!-- The Tally search slot (the homepage's search_bar.xml, as a field): the search icon in
+         the ink 16 dp in, the words 12 dp after it, and stock SearchView's clear key while there
+         is a query. -->
+    <com.android.settings.intelligence.search.TallySearchField
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/tally_search_slot_margin_side"
+        android:layout_marginEnd="@dimen/tally_search_slot_margin_side"
+        android:layout_marginTop="@dimen/tally_search_slot_margin_top"
+        android:layout_marginBottom="@dimen/tally_search_slot_margin_bottom"
+        android:minHeight="@dimen/tally_search_slot_min_height"
+        android:paddingStart="@dimen/tally_search_slot_padding_side"
+        android:paddingEnd="@dimen/tally_search_slot_padding_side"
+        android:paddingTop="@dimen/tally_search_slot_padding_vertical"
+        android:paddingBottom="@dimen/tally_search_slot_padding_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:addStatesFromChildren="true"
+        android:background="@drawable/tally_search_slot">
+
+        <ImageView
+            android:layout_width="@dimen/tally_icon_size"
+            android:layout_height="@dimen/tally_icon_size"
+            android:importantForAccessibility="no"
+            android:src="@drawable/tally_search_icon"
+            android:tint="@color/tally_ink"/>
+
+        <!-- Stock SearchView's query field: the same input type and keyboard action. -->
+        <view
+            class="com.android.settings.intelligence.search.TallySearchField$QueryText"
+            android:id="@+id/tally_search_query"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/tally_search_text_margin_start"
+            android:layout_marginTop="@dimen/tally_search_key_margin_vertical"
+            android:layout_marginBottom="@dimen/tally_search_key_margin_vertical"
+            android:minHeight="@dimen/tally_target_min"
+            android:gravity="center_vertical|start"
+            android:paddingStart="0dp"
+            android:paddingEnd="@dimen/tally_search_text_padding_end"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:background="@null"
+            android:textAppearance="@style/TextAppearance.Tally.Body"
+            android:lineHeight="@dimen/tally_type_body_line_height"
+            android:textColor="@color/tally_ink"
+            android:textColorHint="@color/tally_ink_muted"
+            android:textAlignment="viewStart"
+            android:hint="@string/tally_search_hint"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:inputType="text|textAutoComplete|textNoSuggestions"
+            android:imeOptions="actionSearch|flagNoExtractUi"/>
+
+        <ImageButton
+            android:id="@+id/tally_search_clear"
+            android:layout_width="@dimen/tally_target_min"
+            android:layout_height="@dimen/tally_target_min"
+            android:layout_marginEnd="@dimen/tally_search_clear_margin_end"
+            android:layout_marginTop="@dimen/tally_search_key_margin_vertical"
+            android:layout_marginBottom="@dimen/tally_search_key_margin_vertical"
+            android:background="@drawable/tally_search_key"
+            android:scaleType="center"
+            android:src="@drawable/ic_close_24dp"
+            android:tint="@color/tally_ink"
+            android:contentDescription="@string/tally_search_clear"
+            android:tooltipText="@string/tally_search_clear"
+            android:visibility="gone"/>
+
+    </com.android.settings.intelligence.search.TallySearchField>
 
     <include layout="@layout/search_feedback"/>
 
