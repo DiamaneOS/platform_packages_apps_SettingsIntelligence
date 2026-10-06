@@ -19,8 +19,11 @@ package com.android.settings.intelligence.search;
 
 /**
  * What Home's search (Launcher3, the only holder of {@link #PERMISSION}) and Settings search share:
- * the read-only provider of Settings pages ({@link TallyHomeSearchProvider}) and the activity that
- * opens one ({@link TallyHomeSearchActivity}). Launcher3 keeps a copy of these names.
+ * the read-only provider of Settings results ({@link TallyHomeSearchProvider}) and the activity
+ * that opens one ({@link TallyHomeSearchActivity}). Launcher3 keeps a copy of these names.
+ *
+ * <p>The results are those Settings search shows for the same words, of each {@code KIND_}: Settings
+ * pages from the index, and installed apps (their app info), accessibility services and keyboards.
  *
  * <p>The typed words travel in the query's arguments, never in a URI or an intent, so that no
  * system log line (a permission denial names the URI) carries them.
@@ -33,7 +36,7 @@ public final class TallyHomeSearchContract {
     /** The provider's authority. */
     public static final String AUTHORITY = "de.diamaneos.settingssearch";
 
-    /** The one path the provider answers: Settings pages. */
+    /** The one path the provider answers: Settings results (pages, and the kinds below). */
     public static final String PATH_PAGES = "pages";
 
     /** Query argument: the typed words (a String). */
@@ -45,18 +48,34 @@ public final class TallyHomeSearchContract {
      */
     public static final String ARG_FRESH = "de.diamaneos.settingssearch.FRESH";
 
-    /** Columns of a page row. */
+    /** Columns of a result row. */
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_KEY = "key";
     public static final String COLUMN_TITLE = "title";
     /** The page the result sits on (the last breadcrumb that is not the title), or null. */
     public static final String COLUMN_PARENT = "parent";
+    /** What the result is: one of the {@code KIND_} values. */
+    public static final String COLUMN_KIND = "kind";
 
-    public static final String[] COLUMNS = {COLUMN_ID, COLUMN_KEY, COLUMN_TITLE, COLUMN_PARENT};
+    public static final String[] COLUMNS =
+            {COLUMN_ID, COLUMN_KEY, COLUMN_TITLE, COLUMN_PARENT, COLUMN_KIND};
 
-    /** Extras of the activity's intent: a page row's key and title, as the provider gave them. */
+    /** A Settings page from the index; its key is the index row's. */
+    public static final String KIND_PAGE = "page";
+    /** An installed app's app info; its key is the package name. */
+    public static final String KIND_APP = "app";
+    /** An accessibility service; its key is the service's component name. */
+    public static final String KIND_ACCESSIBILITY = "accessibility";
+    /** A physical keyboard (its key is the device's name) or an on-screen one (its component). */
+    public static final String KIND_INPUT = "input";
+
+    /**
+     * Extras of the activity's intent: a result row's key, title and kind, as the provider gave
+     * them. Without a kind, the row is a page.
+     */
     public static final String EXTRA_KEY = "de.diamaneos.settingssearch.extra.KEY";
     public static final String EXTRA_TITLE = "de.diamaneos.settingssearch.extra.TITLE";
+    public static final String EXTRA_KIND = "de.diamaneos.settingssearch.extra.KIND";
 
     /** The longest query answered; a longer one gets no rows. */
     public static final int MAX_QUERY_LENGTH = 100;
@@ -114,6 +133,25 @@ public final class TallyHomeSearchContract {
             }
         }
         return raw;
+    }
+
+    /**
+     * The kind of a row the activity is asked to open: {@link #KIND_PAGE} when none is given, the
+     * kind when it is one of the {@code KIND_} values, otherwise null (nothing opens).
+     */
+    public static String cleanKind(String raw) {
+        if (raw == null) {
+            return KIND_PAGE;
+        }
+        switch (raw) {
+            case KIND_PAGE:
+            case KIND_APP:
+            case KIND_ACCESSIBILITY:
+            case KIND_INPUT:
+                return raw;
+            default:
+                return null;
+        }
     }
 
     /**
