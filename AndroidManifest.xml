@@ -79,7 +79,7 @@
             android:name=".search.TallyHomeSearchActivity"
             android:exported="true"
             android:permission="de.diamaneos.permission.QUERY_SETTINGS_SEARCH"
-            android:theme="@android:style/Theme.NoDisplay"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:noHistory="true" />
