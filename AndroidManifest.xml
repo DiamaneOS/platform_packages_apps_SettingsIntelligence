@@ -26,6 +26,12 @@
     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE" />
     <uses-permission android:name="android.permission.MANAGE_FINGERPRINT" />
 
+    <!-- DiamaneOS Tally: Home's search (Launcher3, signed with the same key) reads Settings search
+         results from the provider below and opens one through the activity below. -->
+    <permission
+        android:name="de.diamaneos.permission.QUERY_SETTINGS_SEARCH"
+        android:protectionLevel="signature" />
+
     <uses-sdk android:targetSdkVersion="37" />
 
     <queries>
@@ -58,6 +64,25 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- DiamaneOS Tally: Settings search's results for Home's search, read-only: pages from
+             its own index, app info, accessibility services and keyboards
+             (TallyHomeSearchProvider), and their opener (TallyHomeSearchActivity). Both only for
+             holders of the signature permission above. -->
+        <provider
+            android:name=".search.TallyHomeSearchProvider"
+            android:authorities="de.diamaneos.settingssearch"
+            android:exported="true"
+            android:permission="de.diamaneos.permission.QUERY_SETTINGS_SEARCH" />
+
+        <activity
+            android:name=".search.TallyHomeSearchActivity"
+            android:exported="true"
+            android:permission="de.diamaneos.permission.QUERY_SETTINGS_SEARCH"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            android:noHistory="true" />
 
     </application>
 </manifest>
