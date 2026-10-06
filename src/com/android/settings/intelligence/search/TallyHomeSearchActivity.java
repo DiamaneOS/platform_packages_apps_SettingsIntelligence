@@ -17,6 +17,11 @@
 
 package com.android.settings.intelligence.search;
 
+import static com.android.settings.intelligence.search.TallyHomeSearchContract.KIND_ACCESSIBILITY;
+import static com.android.settings.intelligence.search.TallyHomeSearchContract.KIND_APP;
+import static com.android.settings.intelligence.search.TallyHomeSearchContract.KIND_INPUT;
+import static com.android.settings.intelligence.search.TallyHomeSearchContract.KIND_PAGE;
+import static com.android.settings.intelligence.search.indexing.DatabaseIndexingUtils.SEARCH_RESULT_TRAMPOLINE_ACTION;
 import static com.android.settings.intelligence.search.indexing.IndexDatabaseHelper.IndexColumns.DATA_KEY_REF;
 import static com.android.settings.intelligence.search.indexing.IndexDatabaseHelper.IndexColumns.DATA_TITLE;
 import static com.android.settings.intelligence.search.indexing.IndexDatabaseHelper.IndexColumns.ENABLED;
@@ -33,18 +38,35 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.settings.intelligence.overlay.FeatureFactory;
+import com.android.settings.intelligence.search.indexing.IndexData;
 import com.android.settings.intelligence.search.indexing.IndexDatabaseHelper;
+import com.android.settings.intelligence.search.query.AccessibilityServiceResultTask;
 import com.android.settings.intelligence.search.query.CursorToSearchResultConverter;
+import com.android.settings.intelligence.search.query.InputDeviceResultTask;
+import com.android.settings.intelligence.search.query.InstalledAppResultTask;
+import com.android.settings.intelligence.search.query.SearchQueryTask;
+import com.android.settings.intelligence.search.sitemap.SiteMapManager;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 /**
- * Opens a Settings page that Home's search found ({@link TallyHomeSearchProvider}), as a tap on
- * the same result in Settings search does ({@link IntentSearchViewHolder}): the page's own intent
- * from the index, started by Settings search, so Settings' result trampoline accepts it. It looks
- * the page up by the key and title the provider gave, among enabled pages only, and opens nothing
- * else. Nothing is recorded (Settings search's saved queries stay as they were).
+ * Opens a Settings result that Home's search found ({@link TallyHomeSearchProvider}), as a tap on
+ * the same result in Settings search does ({@link IntentSearchViewHolder}): the result's own
+ * intent, started by Settings search, so Settings' result trampoline accepts it. It finds the
+ * result again by the kind, key and title the provider gave, and opens nothing else:
+ * <ul>
+ * <li>a page among the index's enabled pages;
+ * <li>an app's app info, an accessibility service or a keyboard by running Settings search's own
+ * task for that kind with the title as the words, so the same rules decide whether it is shown,
+ * and taking the result with the same key and title.
+ * </ul>
+ * Nothing is recorded (Settings search's saved queries stay as they were).
  *
  * <p>Only holders of {@link TallyHomeSearchContract#PERMISSION} (signature) can start it. It shows
- * nothing and finishes at once; the page opens in Settings' own task.
+ * nothing and finishes at once; the result opens in Settings' own task.
  */
 public class TallyHomeSearchActivity extends Activity {
 
@@ -67,29 +89,85 @@ public class TallyHomeSearchActivity extends Activity {
                 request.getStringExtra(TallyHomeSearchContract.EXTRA_KEY));
         final String title = TallyHomeSearchContract.cleanReference(
                 request.getStringExtra(TallyHomeSearchContract.EXTRA_TITLE));
-        if (key == null || title == null) {
+        final String kind = TallyHomeSearchContract.cleanKind(
+                request.getStringExtra(TallyHomeSearchContract.EXTRA_KIND));
+        if (key == null || title == null || kind == null) {
             return;
         }
-        final Intent page = findPage(key, title);
-        if (page == null) {
-            Log.w(TAG, "No such page");
+        final Intent target;
+        boolean forResult = true;
+        if (KIND_PAGE.equals(kind)) {
+            target = findPage(key, title);
+        } else {
+            final SearchResult result = findResult(kind, key, title);
+            target = result == null ? null : new Intent(result.payload.getIntent());
+            // As IntentSearchViewHolder starts an app's app info.
+            forResult = !(result instanceof AppSearchResult)
+                    || SEARCH_RESULT_TRAMPOLINE_ACTION.equals(target.getAction());
+        }
+        if (target == null) {
+            Log.w(TAG, "No such result");
             return;
         }
         // Settings' own task, not this one, which leaves no trace in Recents.
-        page.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (getPackageManager().queryIntentActivities(page, 0 /* flags */).isEmpty()) {
-            Log.w(TAG, "The page cannot be opened");
+        target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (getPackageManager().queryIntentActivities(target, 0 /* flags */).isEmpty()) {
+            Log.w(TAG, "The result cannot be opened");
             return;
         }
         try {
-            // For a result, as Settings search: the trampoline checks who started it.
-            startActivityForResult(page, REQUEST_CODE_NO_OP);
+            if (forResult) {
+                // For a result, as Settings search: the trampoline checks who started it.
+                startActivityForResult(target, REQUEST_CODE_NO_OP);
+            } else {
+                startActivity(target);
+            }
         } catch (ActivityNotFoundException | SecurityException e) {
-            Log.w(TAG, "The page cannot be opened", e);
+            Log.w(TAG, "The result cannot be opened", e);
         }
     }
 
-    /** The intent of the enabled page with [key] and [title], or null. */
+    /**
+     * The result of {@code kind} (not a page) with {@code key} and {@code title} that Settings
+     * search shows when the title is typed, or null.
+     */
+    private SearchResult findResult(String kind, String key, String title) {
+        final SiteMapManager siteMap =
+                FeatureFactory.get(this).searchFeatureProvider().getSiteMapManager();
+        // As Settings search cleans its words (SearchFeatureProviderImpl.cleanQuery).
+        final String query = Locale.getDefault().equals(Locale.JAPAN)
+                ? IndexData.normalizeJapaneseString(title) : title;
+        final SearchQueryTask task;
+        switch (kind) {
+            case KIND_APP:
+                task = InstalledAppResultTask.newTask(this, siteMap, query);
+                break;
+            case KIND_ACCESSIBILITY:
+                task = AccessibilityServiceResultTask.newTask(this, siteMap, query);
+                break;
+            case KIND_INPUT:
+                task = InputDeviceResultTask.newTask(this, siteMap, query);
+                break;
+            default:
+                return null;
+        }
+        task.run();
+        try {
+            final List<? extends SearchResult> results = task.get();
+            for (SearchResult result : results) {
+                if (result != null && key.equals(result.dataKey) && result.title != null
+                        && title.contentEquals(result.title) && result.payload != null
+                        && result.payload.getIntent() != null) {
+                    return result;
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            Log.w(TAG, "Cannot look the result up");
+        }
+        return null;
+    }
+
+    /** The intent of the enabled page with {@code key} and {@code title}, or null. */
     private Intent findPage(String key, String title) {
         try {
             final SQLiteDatabase database =
