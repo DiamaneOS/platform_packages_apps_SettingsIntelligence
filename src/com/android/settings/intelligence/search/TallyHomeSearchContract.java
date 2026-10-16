@@ -60,11 +60,11 @@ public final class TallyHomeSearchContract {
     public static final String[] COLUMNS =
             {COLUMN_ID, COLUMN_KEY, COLUMN_TITLE, COLUMN_PARENT, COLUMN_KIND};
 
-    /** A Settings page from the index; its key is the index row's. */
+    /** A Settings page from the index. Its key is the index row's. */
     public static final String KIND_PAGE = "page";
-    /** An installed app's app info; its key is the package name. */
+    /** An installed app's app info. Its key is the package name. */
     public static final String KIND_APP = "app";
-    /** An accessibility service; its key is the service's component name. */
+    /** An accessibility service. Its key is the service's component name. */
     public static final String KIND_ACCESSIBILITY = "accessibility";
     /** A physical keyboard (its key is the device's name) or an on-screen one (its component). */
     public static final String KIND_INPUT = "input";
@@ -77,7 +77,7 @@ public final class TallyHomeSearchContract {
     public static final String EXTRA_TITLE = "de.diamaneos.settingssearch.extra.TITLE";
     public static final String EXTRA_KIND = "de.diamaneos.settingssearch.extra.KIND";
 
-    /** The longest query answered; a longer one gets no rows. */
+    /** The longest query answered. A longer one gets no rows. */
     public static final int MAX_QUERY_LENGTH = 100;
 
     /** The most rows a query returns. */

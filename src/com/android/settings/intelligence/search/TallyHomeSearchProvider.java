@@ -71,7 +71,7 @@ import java.util.concurrent.TimeoutException;
  * summaries (as Settings search shows them), no icons and no intents. A result opens through
  * {@link TallyHomeSearchActivity}.
  *
- * <p>App info results name installed apps; the only caller, Launcher, already knows them.
+ * <p>App info results name installed apps. The only caller, Launcher, already knows them.
  *
  * <p>Only holders of {@link TallyHomeSearchContract#PERMISSION} (signature) reach it, only from
  * this user. It keeps nothing: no saved query, no log of the words.
@@ -90,7 +90,7 @@ public class TallyHomeSearchProvider extends ContentProvider {
     private static final long TASK_TIMEOUT_MS = 600;
 
     private static final Object sLock = new Object();
-    /** Counts down when the running refresh is done; null when none runs. */
+    /** Counts down when the running refresh is done. Null when none runs. */
     private static CountDownLatch sRefresh;
     /** When the last refresh started (elapsed realtime), 0 before the first. */
     private static long sLastRefreshStart;
@@ -177,8 +177,8 @@ public class TallyHomeSearchProvider extends ContentProvider {
 
     /**
      * The results of {@code tasks}, as SearchResultAggregator merges them for Settings search: pages
-     * first, in the index's order, then the rest by rank. A task that is slow or fails adds none;
-     * one of a kind this provider does not know adds none either.
+     * first, in the index's order, then the rest by rank. A task that is slow or fails adds none.
+     * One of a kind this provider does not know adds none either.
      */
     private static List<Found> collect(List<SearchQueryTask> tasks) throws InterruptedException {
         final List<Found> merged = new ArrayList<>();
@@ -237,7 +237,7 @@ public class TallyHomeSearchProvider extends ContentProvider {
      * Brings the index up to date before a query, as Settings search does when it opens: on the
      * first query since this process started, and on a fresh one (Home's search just opened) at
      * most every {@link #MIN_REFRESH_INTERVAL_MS}. Waits for a refresh that runs, at most
-     * {@link #MAX_INDEX_WAIT_MS}; the refresh runs on Settings search's own serial indexing task,
+     * {@link #MAX_INDEX_WAIT_MS}. The refresh runs on Settings search's own serial indexing task,
      * so the two never index at once.
      */
     private void awaitIndex(boolean fresh, CancellationSignal signal)
@@ -272,7 +272,7 @@ public class TallyHomeSearchProvider extends ContentProvider {
                 throw new OperationCanceledException();
             }
             if (SystemClock.elapsedRealtime() >= deadline) {
-                // Answer from the index as it is; a later query waits again.
+                // Answer from the index as it is. A later query waits again.
                 return;
             }
         }

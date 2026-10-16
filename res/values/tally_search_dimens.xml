@@ -23,12 +23,12 @@
 
     <!-- The search slot sits where the homepage's does (Settings' search_bar.xml): 48 dp tall,
          16 dp from the sides, 8 dp under the results and 4 dp above the navigation bar, or above
-         the keyboard while it shows; 12 dp corners, the icon 16 dp in and the words 12 dp after
+         the keyboard while it shows. 12 dp corners, the icon 16 dp in and the words 12 dp after
          it. Its view is 2 dp larger than the slot on every side, room for the 2 dp ring of a
          focused field (the prototype's .aa-search:focus-within), so its margins are 2 dp smaller
          and its padding 2 dp larger than the slot's. -->
     <dimen name="tally_search_slot_ring">2dp</dimen>
-    <!-- Focused: the ring and the slot's 1 dp edge as one 3 dp stroke from the view's edge; the
+    <!-- Focused: the ring and the slot's 1 dp edge as one 3 dp stroke from the view's edge. The
          stroke's middle runs 1.5 dp in, so 12.5 dp there gives the ring 14 dp outer corners. -->
     <dimen name="tally_search_slot_focus_stroke">3dp</dimen>
     <dimen name="tally_search_slot_focus_radius">12.5dp</dimen>

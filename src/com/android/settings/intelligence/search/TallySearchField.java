@@ -38,8 +38,8 @@ import com.android.settings.intelligence.R;
  * The search panel's field drawn as the Tally search slot (search_panel.xml). It stands in for
  * the {@link SearchView} the panel used and does what that did: the listener hears every change
  * of the query, and a submit from the keyboard's search key or Enter when the field holds more
- * than spaces; the clear key, shown while there is a query, empties the field and keeps the
- * keyboard up; and the keyboard opens by itself when the window gains focus with the field
+ * than spaces. The clear key, shown while there is a query, empties the field and keeps the
+ * keyboard up. The keyboard opens by itself when the window gains focus with the field
  * focused, as SearchView's own field does. A tap anywhere on the slot focuses the field.
  */
 public class TallySearchField extends LinearLayout {

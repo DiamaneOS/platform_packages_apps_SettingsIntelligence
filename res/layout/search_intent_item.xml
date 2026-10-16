@@ -15,7 +15,7 @@
 -->
 
 <!-- Tally: a result as a key (the prototype's .srow): the surface in a hairline edge with 8 dp
-     corners, 6 dp above the next key, at least 56 dp tall; the result's own icon, then its title
+     corners, 6 dp above the next key, at least 56 dp tall. The result's own icon, then its title
      in the ink and its place in Settings in the muted colour, both wrapping at large text. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

@@ -62,7 +62,7 @@ import java.util.concurrent.Future;
  * intent, started by Settings search, so Settings' result trampoline accepts it. It finds the
  * result again by the kind, key and title the provider gave, and opens nothing else:
  * <ul>
- * <li>a page among the index's enabled pages;
+ * <li>a page among the index's enabled pages
  * <li>an app's app info, an accessibility service or a keyboard by running Settings search's own
  * task for that kind with the title as the words, so the same rules decide whether it is shown,
  * and taking the result with the same key and title.
@@ -70,11 +70,11 @@ import java.util.concurrent.Future;
  * Nothing is recorded (Settings search's saved queries stay as they were).
  *
  * <p>The lookup runs on Settings search's executor, never on the main thread (the installed-apps
- * task reads every app's label). Meanwhile this activity is a transparent window; it opens the
+ * task reads every app's label). Meanwhile this activity is a transparent window. It opens the
  * result only if it is still in front, and gives up after {@link #MAX_LOOKUP_MS}.
  *
  * <p>Only holders of {@link TallyHomeSearchContract#PERMISSION} (signature) can start it. It shows
- * nothing and finishes as soon as the result is open; the result opens in Settings' own task.
+ * nothing and finishes as soon as the result is open. The result opens in Settings' own task.
  */
 public class TallyHomeSearchActivity extends Activity {
 

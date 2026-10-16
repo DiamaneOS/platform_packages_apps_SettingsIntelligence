@@ -16,7 +16,7 @@
   -->
 
 <!-- A search result or recent search as a Tally key (the prototype's .srow): the surface in a
-     hairline edge with 8 dp corners; press and focus feedback stay inside the key. -->
+     hairline edge with 8 dp corners. Press and focus feedback stay inside the key. -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/tally_press">
     <item>

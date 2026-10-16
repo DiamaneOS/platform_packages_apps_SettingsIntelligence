@@ -81,7 +81,7 @@ final class TallySearchPanel extends WindowInsetsAnimation.Callback
     @Override
     public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
         mLastInsets = insets;
-        // While the keyboard moves, onProgress() lays the panel out; this is its end state.
+        // While the keyboard moves, onProgress() lays the panel out. This is its end state.
         if (!mImeAnimating) {
             applyPadding(insets);
         }

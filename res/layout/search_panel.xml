@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 <!-- Tally: the search field is the Tally search slot, at the bottom where the homepage's slot
-     sits, so opening search keeps the same field in the same place; the results stack up from
+     sits, so opening search keeps the same field in the same place. The results stack up from
      it, and the slot rides above the keyboard while it shows (TallySearchPanel). The bar at the
      top keeps stock's Navigate up and its menu (Clear history). The ids the fragment looks up
      are stock's. -->
