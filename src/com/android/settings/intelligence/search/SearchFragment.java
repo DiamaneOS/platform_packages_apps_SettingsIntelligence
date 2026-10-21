@@ -141,7 +141,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final Activity activity = getActivity();
-        final View view = inflater.inflate(R.layout.search_panel, container, false);
+        final View view = inflater.inflate(R.layout.tally_search_panel, container, false);
         mResultsRecyclerView = view.findViewById(R.id.list_results);
         mResultsRecyclerView.setAdapter(mSearchAdapter);
         // Tally: the results stack up from the search slot at the bottom, the first right above it.

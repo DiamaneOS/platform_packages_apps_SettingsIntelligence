@@ -31,7 +31,7 @@ import com.android.settings.intelligence.R;
 import java.util.List;
 
 /**
- * Lays the Tally search panel (search_panel.xml) out edge to edge: the bar right under the
+ * Lays the Tally search panel (tally_search_panel.xml) out edge to edge: the bar right under the
  * status bar, and the search slot 4 dp above the navigation bar, as on the homepage, or above
  * the keyboard while it shows. While the keyboard opens or closes, the slot and the results
  * follow it frame by frame. A hairline shows under the bar while results are hidden above the
@@ -49,7 +49,7 @@ final class TallySearchPanel extends WindowInsetsAnimation.Callback
         mPanel = panel;
     }
 
-    /** Sets up the panel inflated from search_panel.xml, with its results list. */
+    /** Sets up the panel inflated from tally_search_panel.xml, with its results list. */
     static void attach(@NonNull Activity activity, @NonNull View panel,
             @NonNull RecyclerView list) {
         // The panel keeps itself clear of the system bars and the keyboard, whatever the target
